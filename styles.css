@@ -1,0 +1,11 @@
+body {
+  padding: 0;
+  margin: 0;
+  background: linear-gradient(to left, #1029e6, #ccde2a);
+}
+
+.calculator {
+  /* display: grid; */
+  justify-content: center;
+  align-items: center;
+}
