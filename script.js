@@ -1,3 +1,4 @@
+//creating calculator class
 class Calculator {
   constructor(lastText, currentText) {
     this.lastText = lastText;
@@ -11,7 +12,9 @@ class Calculator {
     this.operation = undefined;
   }
 
-  delete() {}
+  delete() {
+    this.currentOperand = this.currentOperand.toString().slice(0, -1);
+  }
 
   chooseOperation(operation) {
     if (this.currentOperand === "") return;
@@ -27,26 +30,76 @@ class Calculator {
     if (number === "." && this.currentOperand.includes(".")) return;
     this.currentOperand = this.currentOperand.toString() + number.toString();
   }
+
+  getDisplay(number) {
+    const stringNumber = number.toString();
+    const integerDigits = parseFloat(stringNumber.split(".")[0]);
+    const decimalDigits = stringNumber.split(".")[1];
+    let integerDisplay;
+    if (isNaN(integerDigits)) {
+      integerDisplay = "";
+    } else {
+      integerDisplay = integerDigits.toLocaleString("en", {
+        maximumFractionDigits: 0,
+      });
+    }
+    if (decimalDigits != null) {
+      return `${integerDisplay}.${decimalDigits}`;
+    } else {
+      return integerDisplay;
+    }
+  }
+
   updateDisplay() {
-    this.currentText.innerText = this.currentOperand;
-    this.lastText.innerText = this.previousOperand;
+    this.currentText.innerText = this.getDisplay(this.currentOperand);
+    if (this.operation != null) {
+      this.lastText.innerText = `${this.previousOperand} ${this.operation}`;
+    } else {
+      this.lastText.innerText = "";
+    }
   }
   compute() {
     let computation;
     const prev = parseFloat(this.previousOperand);
     const current = parseFloat(this.currentOperand);
+    if (isNaN(prev) || isNaN(current)) return;
+    switch (this.operation) {
+      case "+":
+        computation = prev + current;
+        break;
+      case "-":
+        computation = prev - current;
+        break;
+      case "*":
+        computation = prev * current;
+        break;
+      case "÷":
+        computation = prev / current;
+        break;
+      default:
+        return;
+    }
+    this.currentOperand = computation;
+    this.operation = undefined;
+    this.previousOperand = "";
   }
 }
 
+//Selecting buttons from html file;
 const numberButtons = document.querySelectorAll(".number");
 const operationButtons = document.querySelectorAll(".operation");
 const eqButton = document.querySelector(".equals");
 const clearButton = document.querySelector(".clear");
 const deleteButton = document.querySelector(".delete");
+
+//Selecting display part of calculator
 const lastText = document.querySelector("#last");
 const currentText = document.querySelector("#current");
+
+//creating new calculator
 const calculator = new Calculator(lastText, currentText);
 
+//Adding events on buttons
 numberButtons.forEach((button) => {
   button.addEventListener("click", () => {
     calculator.addNumber(button.innerText);
@@ -61,11 +114,17 @@ operationButtons.forEach((button) => {
   });
 });
 
-operationButtons.forEach((button) => {
-  console.log(button.innerText);
-});
-
 eqButton.addEventListener("click", (button) => {
   calculator.compute();
+  calculator.updateDisplay();
+});
+
+clearButton.addEventListener("click", (button) => {
+  calculator.clear();
+  calculator.updateDisplay();
+});
+
+deleteButton.addEventListener("click", (button) => {
+  calculator.delete();
   calculator.updateDisplay();
 });
