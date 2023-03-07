@@ -129,29 +129,22 @@ deleteButton.addEventListener("click", (button) => {
   calculator.updateDisplay();
 });
 
-// let body = document.body;
-
-// let keyName = document.createElement("div");
-// let keyCode = document.createElement("div");
-
-// body.appendChild(keyName);
-// body.appendChild(keyCode);
-
-// keyName.innerHTML = "<h1>Press any keyboard key</h1>";
-
-// keyCode.innerHTML = "";
 let body = document.body;
 body.addEventListener("keydown", (e) => {
-  calculator.addNumber(e.key);
-  calculator.updateDisplay();
+  if ((e.key >= 0 && e.key <= 9) || e.key == ".") {
+    calculator.addNumber(e.key);
+    calculator.updateDisplay();
+  } else if (e.key == "Backspace") {
+    calculator.delete();
+    calculator.updateDisplay();
+  } else if (e.key == "Delete") {
+    calculator.clear();
+    calculator.updateDisplay();
+  } else if (e.key == "*" || e.key == "+" || e.key == "/" || e.key == "-") {
+    calculator.chooseOperation(e.key);
+    calculator.updateDisplay();
+  } else if (e.key == "Enter") {
+    calculator.compute();
+    calculator.updateDisplay();
+  }
 });
-
-//   if (e.which == 32){
-//     keyName.innerHTML = `<h1>You pressed <span>Space</span></h1>`;
-//   }else {
-//     keyName.innerHTML = `<h1>You pressed <span>${e.key}</span></h1>`;
-//   }
-//   let span1 = document.querySelector("span");
-//   keyCode.innerHTML = `<h1> ${e.which}</h1>`;
-
-// });
