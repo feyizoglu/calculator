@@ -148,3 +148,5 @@ body.addEventListener("keydown", (e) => {
     calculator.updateDisplay();
   }
 });
+
+// Farklı operatore ilk seçilen operatorden sonra basıldığında operator değiştirilecek
