@@ -140,10 +140,13 @@ body.addEventListener("keydown", (e) => {
   } else if (e.key == "Delete") {
     calculator.clear();
     calculator.updateDisplay();
-  } else if (e.key == "*" || e.key == "+" || e.key == "/" || e.key == "-") {
+  } else if (e.key == "*" || e.key == "+" || e.key == "-") {
     calculator.chooseOperation(e.key);
     calculator.updateDisplay();
-  } else if (e.key == "Enter") {
+  } else if (e.key == "/") {
+    calculator.chooseOperation("÷");
+    calculator.updateDisplay();
+  } else if (e.key === "Enter") {
     calculator.compute();
     calculator.updateDisplay();
   }
